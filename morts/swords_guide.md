@@ -18,9 +18,8 @@ Below is a comprehensive guide to obtaining each sword, along with the incantati
 
 ![Pack-To-Krafft](./morts_gifs/pack-to-krafft.gif)
 
-3. Collect the 4 pages in the sitting room [staminup room] (they all have red glowing symbols on them)
-4. Get to round 10 and get the stamp from the knight zombie
-5. Go to the knight of the sword you want in the sword room
+3. Get to round 10 and get the stamp from the knight zombie
+4. Go to the knight of the sword you want in the sword room
 
 ---
 
@@ -150,3 +149,105 @@ Solais channels the power of light, offering radiant and piercing attacks.
 ### Step 4: Cover yourself in oil
 1. Go back to the glowing chest
 2. Take the light incantation
+
+# Easter Egg
+The easter egg for this map is a little bit nonlinear so I'm just going to put
+the order I would do things in here.
+
+## Step 1: Collect the pages (Slender)
+
+Go to the sitting room and collect the pages in the room. They should be glowing
+if you already talked to Krafft.  
+
+
+## Step 2: Bottle Puzzle
+
+1. Mark down the six bottles and their symbols in the bar room in spawn. They
+   have Roman Numerals on them. 
+2. Go to the water room and melee the broken part of the wall with melee
+   macchiato to fully break it. 
+3. Input the symbols in order.
+
+## Step 3: Activate the Traps in Order
+
+1. Look at the puzzles from top left bottom left top right bottom right as if you
+were reading a book.
+2. Activate the traps with the corresponding glowing symbols in order.
+3. Kill zombies in there to complete it.
+
+## Step 4: Activate the Statues
+Look at the wall in the passageway to the basement that has all the sword
+symbols on it. 
+
+1. The symbols have a Roman Numeral next to it.
+2. Hit Q to unleash the incantation and inspect the sword in front of the
+   correct knight in order.
+3. Repeat this with all the knights until a mystical orb drops from the sky.
+
+Note: if the orb is in the air and doesn't descend then you have to jump from
+the balcony and hold F to pick it up.
+
+## Step 5: Activate the orb
+In this step you'll take the orb around the map to fill it with souls.
+
+1. Place the orb in the pedestal on the walls near where you filled up the
+   incantation of the weapons. The order doesn't matter
+
+| Sword | Location                             |
+| :---: | :---:                                |
+| Fire  |  Middle of the courtyard on the wall |
+| Stag  |  Spawn near the chest                |
+| Light |  Second floor balcony in sword room  |
+| Void  |  Water room near the chest           |
+
+## Step 6: Room
+Go back to the room in the passageway to the basement and unlock it with the
+orb. This will trigger a cutscene and you take the key.
+
+## Step 7: Boss fight
+Do the boss fight. Tier 3 drill will shred it. Definitely bring tier 3 weapons
+but the drill should kill him very quick.
+
+# Rat Easter Egg
+For the rat easter egg you have to get cheese and scare rats by proning near
+their location on the map.
+
+## Cheese
+There's a cheese shop in spawn. Break the windows and hold F to pick up the
+cheese.
+
+## Locations
+
+1. Spawn in a flower pot on the left side
+2. Nature path near deadshot in the stone wall, it lookd like a tiny cave
+opening
+3. Underneath the van after buying the first door on the right
+4. Underneath the cannon on the broken stair on the macchiato side
+5. Underneath chairs near Juggernog on the right side
+6. Underneath a pallet in the sword room (Dining hall)
+7. Underneath a table in the corner of the staminup room (Sitting room) 
+8. Behind the tablet in the magic room (Alchemical Lab)
+9. In the water room near a pillar next to the mysterbox location (Undercroft)
+10. In a jail cell in the Dungeon. It should be the first cell (Dungeon) 
+
+# Fix The Cannon Easter Egg
+When you fire the cannon at the door to open the castle, the cannon breaks. This
+is how to fix it.
+
+## Step 1: Get the crank
+The crank will fly off the handle and launch back to spawn. It will be at the
+back of spawn near a box of bananas.
+
+## Step 2: Get the blowtorch
+Pick up the blowtorch. It's in the sword room, ground level in the right back
+corner near a gas canister.
+
+## Step 3: Fix the Cannon
+Go back to the cannon and hold F where the crank is to fix the cannon.        
+
+## 100 Times
+Congratulations you can now turn the cannon around to the other side now. If you
+fire yourself out the cannon towards spawn 100 times you get shot at and hit the
+bell tower at spawn.
+
+
