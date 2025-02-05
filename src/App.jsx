@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
 import 'semantic-ui-css/semantic.min.css';
-import Background from './Background';
+import Background from './components/Background';
 import { Button, Container, Header, Icon, Image } from 'semantic-ui-react';
 
 function App() {
