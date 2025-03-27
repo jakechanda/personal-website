@@ -265,9 +265,121 @@
                 overflow-x: auto;
             }
         }
+
+        .why-button {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            z-index: 1000;
+            font-size: 0.9rem;
+            width: auto;
+            min-width: 120px;
+        }
+
+        .why-button:hover {
+            background: #2980b9;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1001;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #7f8c8d;
+            padding: 5px;
+        }
+
+        .lunch-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .lunch-option-btn {
+            flex: 1;
+            padding: 0.5rem;
+            background: #f8f9fa;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .lunch-option-btn.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .lunch-times {
+            display: none;
+        }
+
+        .lunch-times.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .why-button {
+                position: fixed;
+                top: 10px;
+                right: 10px;
+                width: auto;
+                min-width: 120px;
+                margin: 0;
+            }
+        }
     </style>
 </head>
 <body>
+    <button class="why-button" onclick="showModal()">Why I Made This</button>
+
+    <div class="modal" id="whyModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="hideModal()">&times;</button>
+            <h2>Why I Made This</h2>
+            <p style="margin-top: 1rem; line-height: 1.6;">
+                I got tired of calculating in my head when to clock out on Friday. So I just put the amount of time I worked on a given day, choose the start time on Friday and the length of my lunch break, and have it calculate when to clock out for me.
+            </p>
+        </div>
+    </div>
+
     <div class="header">
         <img src="sungodchanda.png" alt="Sun God Chanda Illustration">
     </div>
@@ -295,9 +407,23 @@
                 <label for="fridayStart">Friday Start Time:</label>
                 <input type="time" id="fridayStart">
             </div>
-            <div class="input-group">
+            <div class="lunch-options">
+                <button class="lunch-option-btn active" onclick="toggleLunchOption('duration')">Lunch Duration</button>
+                <button class="lunch-option-btn" onclick="toggleLunchOption('times')">Lunch Times</button>
+            </div>
+            <div class="input-group" id="lunchDurationGroup">
                 <label for="lunchLength">Lunch Break Length (minutes):</label>
                 <input type="number" id="lunchLength" min="0" max="120" step="5" value="30">
+            </div>
+            <div class="lunch-times" id="lunchTimesGroup">
+                <div class="input-group">
+                    <label for="lunchOut">Clock Out for Lunch:</label>
+                    <input type="time" id="lunchOut">
+                </div>
+                <div class="input-group">
+                    <label for="lunchIn">Clock In from Lunch:</label>
+                    <input type="time" id="lunchIn">
+                </div>
             </div>
             <button onclick="calculateClockOut()">Calculate Clock Out Time</button>
             <div class="error" id="error"></div>
@@ -435,6 +561,40 @@
             document.getElementById('realTimeTotal').textContent = `Total Hours: ${total.toFixed(2)}`;
         }
 
+        function showModal() {
+            document.getElementById('whyModal').classList.add('show');
+        }
+
+        function hideModal() {
+            document.getElementById('whyModal').classList.remove('show');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('whyModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                hideModal();
+            }
+        });
+
+        function toggleLunchOption(option) {
+            const durationBtn = document.querySelector('.lunch-option-btn:first-child');
+            const timesBtn = document.querySelector('.lunch-option-btn:last-child');
+            const durationGroup = document.getElementById('lunchDurationGroup');
+            const timesGroup = document.getElementById('lunchTimesGroup');
+
+            if (option === 'duration') {
+                durationBtn.classList.add('active');
+                timesBtn.classList.remove('active');
+                durationGroup.style.display = 'block';
+                timesGroup.style.display = 'none';
+            } else {
+                durationBtn.classList.remove('active');
+                timesBtn.classList.add('active');
+                durationGroup.style.display = 'none';
+                timesGroup.style.display = 'block';
+            }
+        }
+
         function calculateClockOut() {
             // Get input values
             const monday = parseFloat(document.getElementById('monday').value) || 0;
@@ -442,11 +602,32 @@
             const wednesday = parseFloat(document.getElementById('wednesday').value) || 0;
             const thursday = parseFloat(document.getElementById('thursday').value) || 0;
             const fridayStart = document.getElementById('fridayStart').value;
-            const lunchLength = parseInt(document.getElementById('lunchLength').value) || 0;
+            
+            // Get lunch break information
+            const lunchDurationBtn = document.querySelector('.lunch-option-btn:first-child');
+            const isDurationMode = lunchDurationBtn.classList.contains('active');
+            let lunchBreakMinutes = 0;
+
+            if (isDurationMode) {
+                lunchBreakMinutes = parseInt(document.getElementById('lunchLength').value) || 0;
+            } else {
+                const lunchOut = document.getElementById('lunchOut').value;
+                const lunchIn = document.getElementById('lunchIn').value;
+                if (lunchOut && lunchIn) {
+                    const outTime = new Date(`2000-01-01T${lunchOut}`);
+                    const inTime = new Date(`2000-01-01T${lunchIn}`);
+                    lunchBreakMinutes = (inTime - outTime) / (1000 * 60);
+                }
+            }
 
             // Validate inputs
             if (!fridayStart) {
                 showError('Please enter your Friday start time');
+                return;
+            }
+
+            if (!isDurationMode && (!document.getElementById('lunchOut').value || !document.getElementById('lunchIn').value)) {
+                showError('Please enter both lunch clock out and clock in times');
                 return;
             }
 
@@ -465,7 +646,7 @@
             const startTime = new Date(`2000-01-01T${fridayStart}`);
             
             // Add remaining hours and lunch break
-            const endTime = new Date(startTime.getTime() + (remainingHours * 60 + lunchLength) * 60000);
+            const endTime = new Date(startTime.getTime() + (remainingHours * 60 + lunchBreakMinutes) * 60000);
 
             // Format the result
             const hours = endTime.getHours();
