@@ -4,13 +4,12 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import 'semantic-ui-css/semantic.min.css';
 import Background from './components/Background';
-import { Button, Container, Header, Icon, Image } from 'semantic-ui-react';
+import Navbar from './components/NavbarBlack';
 
 function App() {
-
   return (
     <>
-      <Background />
+      <Navbar />
     </>
   )
 }
