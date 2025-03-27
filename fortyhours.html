@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>40 Hours Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            max-width: 300px;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .calculators-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .container.real-time {
+            background: #2c3e50;
+            color: white;
+        }
+
+        .container.real-time h1 {
+            color: white;
+        }
+
+        .container.real-time label {
+            color: #ecf0f1;
+        }
+
+        .container.real-time input {
+            background: #34495e;
+            border-color: #2c3e50;
+            color: white;
+        }
+
+        .container.real-time input:focus {
+            border-color: #3498db;
+        }
+
+        .container.real-time .total {
+            background: #34495e;
+            color: #2ecc71;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #34495e;
+            font-weight: 500;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.8rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        .result {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            text-align: center;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result h2 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .result p {
+            color: #3498db;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            width: 100%;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background: #2980b9;
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .error.show {
+            display: block;
+        }
+
+        @media (max-width: 1024px) {
+            body {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="sungodchanda.png" alt="Sun God Chanda Illustration">
+    </div>
+
+    <div class="calculators-container">
+        <div class="container">
+            <h1>40 Hours Calculator</h1>
+            <div class="input-group">
+                <label for="monday">Monday Hours:</label>
+                <input type="number" id="monday" min="0" max="24" step="0.01" placeholder="Enter hours worked" oninput="validateDecimal(this)">
+            </div>
+            <div class="input-group">
+                <label for="tuesday">Tuesday Hours:</label>
+                <input type="number" id="tuesday" min="0" max="24" step="0.01" placeholder="Enter hours worked" oninput="validateDecimal(this)">
+            </div>
+            <div class="input-group">
+                <label for="wednesday">Wednesday Hours:</label>
+                <input type="number" id="wednesday" min="0" max="24" step="0.01" placeholder="Enter hours worked" oninput="validateDecimal(this)">
+            </div>
+            <div class="input-group">
+                <label for="thursday">Thursday Hours:</label>
+                <input type="number" id="thursday" min="0" max="24" step="0.01" placeholder="Enter hours worked" oninput="validateDecimal(this)">
+            </div>
+            <div class="input-group">
+                <label for="fridayStart">Friday Start Time:</label>
+                <input type="time" id="fridayStart">
+            </div>
+            <div class="input-group">
+                <label for="lunchLength">Lunch Break Length (minutes):</label>
+                <input type="number" id="lunchLength" min="0" max="120" step="5" value="30">
+            </div>
+            <button onclick="calculateClockOut()">Calculate Clock Out Time</button>
+            <div class="error" id="error"></div>
+            <div class="result" id="result">
+                <h2>Clock Out Time</h2>
+                <p id="clockOutTime"></p>
+            </div>
+        </div>
+
+        <div class="container real-time">
+            <h1>Real Time Worked</h1>
+            <div class="input-group">
+                <label for="realMonday">Monday Hours:</label>
+                <input type="number" id="realMonday" min="0" max="24" step="0.01" placeholder="Enter hours worked" oninput="validateDecimal(this)" onchange="calculateRealTime()">
+            </div>
+            <div class="input-group">
+                <label for="realTuesday">Tuesday Hours:</label>
+                <input type="number" id="realTuesday" min="0" max="24" step="0.01" placeholder="Enter hours worked" oninput="validateDecimal(this)" onchange="calculateRealTime()">
+            </div>
+            <div class="input-group">
+                <label for="realWednesday">Wednesday Hours:</label>
+                <input type="number" id="realWednesday" min="0" max="24" step="0.01" placeholder="Enter hours worked" oninput="validateDecimal(this)" onchange="calculateRealTime()">
+            </div>
+            <div class="input-group">
+                <label for="realThursday">Thursday Hours:</label>
+                <input type="number" id="realThursday" min="0" max="24" step="0.01" placeholder="Enter hours worked" oninput="validateDecimal(this)" onchange="calculateRealTime()">
+            </div>
+            <div class="input-group">
+                <label for="realFriday">Friday Hours:</label>
+                <input type="number" id="realFriday" min="0" max="24" step="0.01" placeholder="Enter hours worked" oninput="validateDecimal(this)" onchange="calculateRealTime()">
+            </div>
+            <div class="total" id="realTimeTotal">Total Hours: 0</div>
+        </div>
+    </div>
+
+    <script>
+        // Load saved values when the page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Load Monday through Thursday hours
+            ['monday', 'tuesday', 'wednesday', 'thursday'].forEach(day => {
+                const savedValue = localStorage.getItem(day);
+                if (savedValue) {
+                    document.getElementById(day).value = savedValue;
+                }
+            });
+
+            // Load Friday start time
+            const savedFridayStart = localStorage.getItem('fridayStart');
+            if (savedFridayStart) {
+                document.getElementById('fridayStart').value = savedFridayStart;
+            }
+
+            // Load lunch length
+            const savedLunchLength = localStorage.getItem('lunchLength');
+            if (savedLunchLength) {
+                document.getElementById('lunchLength').value = savedLunchLength;
+            }
+
+            // Load real-time calculator values
+            ['realMonday', 'realTuesday', 'realWednesday', 'realThursday', 'realFriday'].forEach(day => {
+                const savedValue = localStorage.getItem(day);
+                if (savedValue) {
+                    document.getElementById(day).value = savedValue;
+                }
+            });
+
+            // Calculate initial real-time total
+            calculateRealTime();
+        });
+
+        // Save values when they change
+        ['monday', 'tuesday', 'wednesday', 'thursday', 'fridayStart', 'lunchLength', 
+         'realMonday', 'realTuesday', 'realWednesday', 'realThursday', 'realFriday'].forEach(id => {
+            document.getElementById(id).addEventListener('change', function() {
+                localStorage.setItem(id, this.value);
+            });
+        });
+
+        // Add this new function for decimal validation
+        function validateDecimal(input) {
+            // Convert to string and split at decimal point
+            let value = input.value.toString();
+            let parts = value.split('.');
+            
+            // If there's a decimal part and it's longer than 2 digits
+            if (parts.length > 1 && parts[1].length > 2) {
+                // Round to 2 decimal places
+                input.value = parseFloat(value).toFixed(2);
+            }
+        }
+
+        function calculateRealTime() {
+            const days = ['realMonday', 'realTuesday', 'realWednesday', 'realThursday', 'realFriday'];
+            let total = 0;
+            
+            days.forEach(day => {
+                const value = parseFloat(document.getElementById(day).value) || 0;
+                total += value;
+            });
+
+            document.getElementById('realTimeTotal').textContent = `Total Hours: ${total.toFixed(2)}`;
+        }
+
+        function calculateClockOut() {
+            // Get input values
+            const monday = parseFloat(document.getElementById('monday').value) || 0;
+            const tuesday = parseFloat(document.getElementById('tuesday').value) || 0;
+            const wednesday = parseFloat(document.getElementById('wednesday').value) || 0;
+            const thursday = parseFloat(document.getElementById('thursday').value) || 0;
+            const fridayStart = document.getElementById('fridayStart').value;
+            const lunchLength = parseInt(document.getElementById('lunchLength').value) || 0;
+
+            // Validate inputs
+            if (!fridayStart) {
+                showError('Please enter your Friday start time');
+                return;
+            }
+
+            // Calculate total hours worked Monday through Thursday
+            const totalHours = monday + tuesday + wednesday + thursday;
+
+            // Calculate remaining hours needed for Friday
+            const remainingHours = 40 - totalHours;
+
+            if (remainingHours <= 0) {
+                showError('You have already worked 40 hours or more this week');
+                return;
+            }
+
+            // Convert Friday start time to Date object
+            const startTime = new Date(`2000-01-01T${fridayStart}`);
+            
+            // Add remaining hours and lunch break
+            const endTime = new Date(startTime.getTime() + (remainingHours * 60 + lunchLength) * 60000);
+
+            // Format the result
+            const hours = endTime.getHours();
+            const minutes = endTime.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const formattedHours = hours % 12 || 12;
+
+            // Display result
+            document.getElementById('clockOutTime').textContent = 
+                `${formattedHours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+            document.getElementById('result').classList.add('show');
+            document.getElementById('error').classList.remove('show');
+        }
+
+        function showError(message) {
+            const errorElement = document.getElementById('error');
+            errorElement.textContent = message;
+            errorElement.classList.add('show');
+            document.getElementById('result').classList.remove('show');
+        }
+    </script>
+</body>
+</html> 
