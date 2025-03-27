@@ -173,6 +173,98 @@
                 flex-direction: column;
             }
         }
+
+        .history-section {
+            width: 100%;
+            max-width: 1020px;
+            margin-top: 20px;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .history-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .history-buttons button {
+            width: auto;
+            padding: 0.5rem 1rem;
+        }
+
+        .history-buttons button.clear {
+            background: #e74c3c;
+        }
+
+        .history-buttons button.clear:hover {
+            background: #c0392b;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .history-table th,
+        .history-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .history-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .history-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .history-table .date {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+
+        .delete-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+
+        .no-history {
+            text-align: center;
+            padding: 2rem;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .history-table {
+                display: block;
+                overflow-x: auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -241,6 +333,37 @@
         </div>
     </div>
 
+    <div class="history-section">
+        <div class="history-header">
+            <h1>Work History</h1>
+            <div class="history-buttons">
+                <button onclick="saveToHistory()">Save Current Week</button>
+                <button class="clear" onclick="clearHistory()">Clear History</button>
+            </div>
+        </div>
+        <div id="historyTable">
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                        <th>Total Hours</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="historyBody">
+                    <tr>
+                        <td colspan="8" class="no-history">No history yet. Save your first week to see it here!</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <script>
         // Load saved values when the page loads
         document.addEventListener('DOMContentLoaded', function() {
@@ -274,6 +397,9 @@
 
             // Calculate initial real-time total
             calculateRealTime();
+
+            // Load and display history
+            displayHistory();
         });
 
         // Save values when they change
@@ -359,6 +485,97 @@
             errorElement.textContent = message;
             errorElement.classList.add('show');
             document.getElementById('result').classList.remove('show');
+        }
+
+        // Add these new functions for history management
+        function saveToHistory() {
+            // Get current values
+            const monday = document.getElementById('monday').value || '0';
+            const tuesday = document.getElementById('tuesday').value || '0';
+            const wednesday = document.getElementById('wednesday').value || '0';
+            const thursday = document.getElementById('thursday').value || '0';
+            const friday = document.getElementById('realFriday').value || '0';
+            const total = document.getElementById('realTimeTotal').textContent.split(': ')[1] || '0';
+
+            // Calculate the Monday and Friday dates of the current week
+            const today = new Date();
+            const currentDay = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
+            const diff = currentDay === 0 ? 6 : currentDay - 1; // Adjust when Sunday
+            const mondayDate = new Date(today);
+            mondayDate.setDate(today.getDate() - diff);
+            const fridayDate = new Date(mondayDate);
+            fridayDate.setDate(mondayDate.getDate() + 4);
+
+            // Format dates
+            const formatDate = (date) => {
+                return `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()}`;
+            };
+            const weekRange = `Week of ${formatDate(mondayDate)} - ${formatDate(fridayDate)}`;
+
+            // Get existing history
+            let history = JSON.parse(localStorage.getItem('workHistory') || '[]');
+            
+            // Add new entry
+            history.unshift({
+                date: weekRange,
+                monday,
+                tuesday,
+                wednesday,
+                thursday,
+                friday,
+                total
+            });
+
+            // Save to localStorage
+            localStorage.setItem('workHistory', JSON.stringify(history));
+
+            // Update display
+            displayHistory();
+        }
+
+        function clearHistory() {
+            if (confirm('Are you sure you want to clear all history? This cannot be undone.')) {
+                localStorage.removeItem('workHistory');
+                displayHistory();
+            }
+        }
+
+        function displayHistory() {
+            const history = JSON.parse(localStorage.getItem('workHistory') || '[]');
+            const tbody = document.getElementById('historyBody');
+            
+            if (history.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="8" class="no-history">No history yet. Save your first week to see it here!</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = history.map((entry, index) => `
+                <tr>
+                    <td class="date">${entry.date}</td>
+                    <td>${entry.monday}</td>
+                    <td>${entry.tuesday}</td>
+                    <td>${entry.wednesday}</td>
+                    <td>${entry.thursday}</td>
+                    <td>${entry.friday}</td>
+                    <td>${entry.total}</td>
+                    <td>
+                        <button class="delete-btn" onclick="deleteEntry(${index})">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function deleteEntry(index) {
+            if (confirm('Are you sure you want to delete this entry? This cannot be undone.')) {
+                let history = JSON.parse(localStorage.getItem('workHistory') || '[]');
+                history.splice(index, 1);
+                localStorage.setItem('workHistory', JSON.stringify(history));
+                displayHistory();
+            }
         }
     </script>
 </body>
