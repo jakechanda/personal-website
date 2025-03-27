@@ -12,13 +12,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@tailwindcss/vite": "^4.0.8",
     "granim": "^2.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.5.0",
     "semantic-ui-css": "^2.5.0",
-    "semantic-ui-react": "^2.1.5"
+    "semantic-ui-react": "^2.1.5",
+    "three": "^0.174.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
@@ -29,7 +29,6 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "gh-pages": "^6.1.1",
-    "tailwindcss": "^4.0.8",
     "vite": "^5.2.0"
   }
 }

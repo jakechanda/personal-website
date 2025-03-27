@@ -1,1 +1,116 @@
-@import "tailwindcss";
+/* App-specific styles */
+
+/* Container styles */
+.app-container {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+/* Content container styles */
+.content-container {
+  position: relative;
+  z-index: 1;
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+/* Message styles */
+.construction-message {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+  max-width: 600px !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+
+/* Navbar styles */
+.main-nav {
+  padding: 1rem 2rem !important;
+  min-height: 80px !important;
+  background-color: rgba(27, 28, 29, 0.8) !important;
+  backdrop-filter: blur(10px) !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 1000 !important;
+}
+
+.main-nav .brand-item {
+  padding: 0.5rem 1rem !important;
+}
+
+.main-nav .brand-name {
+  font-size: 1.5rem !important;
+  font-weight: bold !important;
+  margin-left: 1rem !important;
+}
+
+.main-nav .nav-item {
+  font-size: 1.1rem !important;
+  padding: 0.5rem 1.5rem !important;
+}
+
+/* Mobile menu styles */
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none !important;
+  }
+  .mobile-sidebar {
+    display: none !important;
+  }
+}
+
+@media (max-width: 767px) {
+  .desktop-menu {
+    display: none !important;
+  }
+  .mobile-sidebar {
+    margin-top: 80px !important;
+  }
+  .main-nav {
+    padding: 0.5rem 1rem !important;
+    min-height: 60px !important;
+  }
+  .main-nav .brand-name {
+    font-size: 1.2rem !important;
+  }
+  .content-container {
+    min-height: calc(100vh - 60px);
+    padding: 1rem;
+  }
+}
+
+/* Ensure the main content doesn't overlap with the fixed navbar */
+body {
+  padding-top: 80px;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+@media (max-width: 767px) {
+  body {
+    padding-top: 60px;
+  }
+}
+
+/* Message styles */
+.ui.message {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+}
